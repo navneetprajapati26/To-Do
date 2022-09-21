@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:todo/util/todo_tile.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -8,6 +11,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List toDoList = [
+    ["getint 20 LPA", true],
+    ["mary with ujala ", true],
+    ["making many ", false]
+  ];
+
+  // Chackbox was tapped
+
+  void checkBoxChanged(bool? value, int index) {
+    setState((){
+      toDoList[index][1] = !toDoList[index][1];
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,25 +33,14 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         centerTitle: true,
       ),
-      body: ListView(
-        children: [
-          TodoTile(
-            taskName: "TO DO",
-            taslComleted: true,
-            onChanged: (p0){},
-          ),
-          TodoTile(
-            taskName: "TO DO",
-            taslComleted: false,
-            onChanged: (p0){},
-          ),
-          TodoTile(
-            taskName: "TO DO",
-            taslComleted: true,
-            onChanged: (p0){},
-          ),
-
-        ],
+      body: ListView.builder(
+        itemCount: toDoList.length,
+        itemBuilder: (context, index) {
+          return TodoTile(
+              onChanged: (value) => checkBoxChanged(value, index),
+              taskName: toDoList[index][0],
+              taslComleted: toDoList[index][1]);
+        },
       ),
     );
   }
